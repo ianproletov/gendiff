@@ -1,0 +1,15 @@
+plugins:
+        # https://github.com/babel/eslint-plugin-import
+        - import
+
+env:
+        node: true
+
+# https://github.com/babel/babel-eslint
+parser: 'babel-eslint'
+
+extends: 
+        - 'airbnb-base'
+
+rules:
+        no-console: 0
