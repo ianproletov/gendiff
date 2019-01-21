@@ -1,0 +1,1 @@
+<a href="https://asciinema.org/a/222739" target="_blank"><img src="https://asciinema.org/a/222739.svg" /></a>

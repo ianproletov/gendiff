@@ -1,13 +1,13 @@
 {
   "name": "gendiff-ianproletov",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "my second hexlet project",
   "bin": {
+    "gendiff": "dist/bin/gendiff.js"
   },
   "files": [
     "dist"
   ],
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
@@ -36,5 +36,8 @@
   "bugs": {
     "url": "https://github.com/ianproletov/project-lvl2-s405/issues"
   },
-  "homepage": "https://github.com/ianproletov/project-lvl2-s405#readme"
+  "homepage": "https://github.com/ianproletov/project-lvl2-s405#readme",
+  "dependencies": {
+    "commander": "^2.19.0"
+  }
 }
