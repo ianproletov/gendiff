@@ -1,0 +1,33 @@
+{
+  "name": "gendiff-ianproletov",
+  "version": "1.0.0",
+  "description": "my second hexlet project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianproletov/project-lvl2-s405.git"
+  },
+  "keywords": [
+    "hexlet",
+    "gendiff"
+  ],
+  "author": "ian proletov",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ianproletov/project-lvl2-s405/issues"
+  },
+  "homepage": "https://github.com/ianproletov/project-lvl2-s405#readme"
+}
