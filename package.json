@@ -1,6 +1,6 @@
 {
   "name": "gendiff-ianproletov",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "my second hexlet project",
   "main": "dist/index.js",
   "bin": {
@@ -32,8 +32,10 @@
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
+    "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
