@@ -14,9 +14,7 @@ export const render = (abstract) => {
   return `{\n ${result}\n}`;
 };
 
-const makePathAbsolute = pathOfFile => (path.isAbsolute(pathOfFile)
-  ? pathOfFile
-  : `${process.cwd()}/${pathOfFile}`);
+const makePathAbsolute = pathOfFile => path.resolve(process.cwd(), pathOfFile);
 
 const genDiff = (firstFile, secondFile) => {
   const firstJSON = JSON.parse(fs.readFileSync(makePathAbsolute(firstFile)));
