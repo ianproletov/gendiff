@@ -11,8 +11,8 @@ const dispetcher = {
 };
 
 const multiParser = {
-  '.json': (first, second) => parser(JSON.parse(first), JSON.parse(second)),
-  '.yml': (first, second) => parser(yaml.safeLoad(first), yaml.safeLoad(second)),
+  '.json': JSON.parse,
+  '.yml': yaml.safeLoad,
 };
 
 export const render = (abstract) => {
@@ -23,10 +23,15 @@ export const render = (abstract) => {
 const makePathAbsolute = pathOfFile => path.resolve(process.cwd(), pathOfFile);
 
 const genDiff = (firstFilePath, secondFilePath) => {
-  const firstFile = fs.readFileSync(makePathAbsolute(firstFilePath));
-  const secondFile = fs.readFileSync(makePathAbsolute(secondFilePath));
-  const typeOfFile = path.extname(makePathAbsolute(firstFilePath));
-  const abstract = multiParser[typeOfFile](firstFile, secondFile);
+  const FirstFilePathAbs = makePathAbsolute(firstFilePath);
+  const SecondFilePathAbs = makePathAbsolute(secondFilePath);
+  const typeOfFirstFile = path.extname(FirstFilePathAbs);
+  const typeOfSecondFile = path.extname(SecondFilePathAbs);
+  const firstFile = fs.readFileSync(FirstFilePathAbs);
+  const secondFile = fs.readFileSync(SecondFilePathAbs);
+  const firstAST = multiParser[typeOfFirstFile](firstFile);
+  const secondAST = multiParser[typeOfSecondFile](secondFile);
+  const abstract = parser(firstAST, secondAST);
   return render(abstract);
 };
 

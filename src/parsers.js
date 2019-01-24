@@ -1,14 +1,14 @@
-import { has, union } from 'lodash';
+import { has, union, isEqual } from 'lodash';
 
 const parser = (firstAST, secondAST) => {
   const keysOfFirst = Object.keys(firstAST);
   const keysOfSecond = Object.keys(secondAST);
   const keysOfBoth = union(keysOfFirst, keysOfSecond);
   const result = keysOfBoth.reduce((acc, key) => {
+    if (isEqual(firstAST[key], secondAST[key])) {
+      return { ...acc, [key]: { keyName: key, value: firstAST[key], status: 'equal' } };
+    }
     if (has(firstAST, key) && has(secondAST, key)) {
-      if (secondAST[key] === firstAST[key]) {
-        return { ...acc, [key]: { keyName: key, value: firstAST[key], status: 'equal' } };
-      }
       const newElement = {
         keyName: key,
         valueOfSecond: secondAST[key],
