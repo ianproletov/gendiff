@@ -1,4 +1,5 @@
 import { has, union, isEqual } from 'lodash';
+import path from 'path';
 import parse from './parsers';
 
 const chartype = {
@@ -13,8 +14,8 @@ export const render = (abstract) => {
 };
 
 const genDiff = (filepath1, filepath2) => {
-  const firstAST = parse(filepath1);
-  const secondAST = parse(filepath2);
+  const firstAST = parse(path.resolve(process.cwd(), filepath1));
+  const secondAST = parse(path.resolve(process.cwd(), filepath2));
   const keys = union(Object.keys(firstAST), Object.keys(secondAST));
   const result = keys.reduce((acc, key) => {
     if (isEqual(firstAST[key], secondAST[key])) {
