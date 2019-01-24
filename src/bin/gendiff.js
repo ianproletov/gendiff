@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 import genDiff from '..';
+import commander from 'commander';
 
-const program = require('commander');
-
-program
+commander
   .version('0.0.1', '-V, --version')
   .option('-f, --format [type]', 'Output format')
   .description('Usage: gendiff [options]')
@@ -13,6 +12,5 @@ program
   .action((firstConfig, secondConfig) => {
     const result = genDiff(firstConfig, secondConfig);
     console.log(result);
-    return result;
   });
-program.parse(process.argv);
+commander.parse(process.argv);
