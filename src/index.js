@@ -10,7 +10,7 @@ const dispetcher = {
 };
 
 export const render = (abstract) => {
-  const result = abstract.map(key => dispetcher[key.status](key)).join('\n');
+  const result = Object.keys(abstract).map(key => dispetcher[abstract[key].status](abstract[key])).join('\n');
   return `{\n ${result}\n}`;
 };
 
@@ -25,17 +25,21 @@ const genDiff = (firstFile, secondFile) => {
   const result = keysOfBoth.reduce((acc, key) => {
     if (has(secondJSON, key) && has(firstJSON, key)) {
       if (secondJSON[key] === firstJSON[key]) {
-        return [...acc, ...[{ keyName: key, value: firstJSON[key], status: 'equal' }]];
+        return { ...acc, [key]: { keyName: key, value: firstJSON[key], status: 'equal' } };
       }
-      return [...acc, ...[{
-        keyName: key, valueOfSecond: secondJSON[key], valueOfFirst: firstJSON[key], status: 'different',
-      }]];
+      const newElement = {
+        keyName: key,
+        valueOfSecond: secondJSON[key],
+        valueOfFirst: firstJSON[key],
+        status: 'different',
+      };
+      return { ...acc, [key]: newElement };
     }
     if (has(secondJSON, key)) {
-      return [...acc, ...[{ keyName: key, value: secondJSON[key], status: 'second' }]];
+      return { ...acc, [key]: { keyName: key, value: secondJSON[key], status: 'second' } };
     }
-    return [...acc, ...[{ keyName: key, value: firstJSON[key], status: 'first' }]];
-  }, []);
+    return { ...acc, [key]: { keyName: key, value: firstJSON[key], status: 'first' } };
+  }, {});
   return render(result);
 };
 
