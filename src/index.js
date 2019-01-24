@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
+import ini from 'ini';
 import parser from './parsers';
 
 const dispetcher = {
@@ -13,6 +14,7 @@ const dispetcher = {
 const multiParser = {
   '.json': JSON.parse,
   '.yml': yaml.safeLoad,
+  '.ini': ini.parse,
 };
 
 export const render = (abstract) => {
@@ -27,8 +29,8 @@ const genDiff = (firstFilePath, secondFilePath) => {
   const SecondFilePathAbs = makePathAbsolute(secondFilePath);
   const typeOfFirstFile = path.extname(FirstFilePathAbs);
   const typeOfSecondFile = path.extname(SecondFilePathAbs);
-  const firstFile = fs.readFileSync(FirstFilePathAbs);
-  const secondFile = fs.readFileSync(SecondFilePathAbs);
+  const firstFile = fs.readFileSync(FirstFilePathAbs, 'utf-8');
+  const secondFile = fs.readFileSync(SecondFilePathAbs, 'utf-8');
   const firstAST = multiParser[typeOfFirstFile](firstFile);
   const secondAST = multiParser[typeOfSecondFile](secondFile);
   const abstract = parser(firstAST, secondAST);

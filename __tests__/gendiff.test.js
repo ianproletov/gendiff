@@ -19,4 +19,8 @@ describe('verify the result', () => {
     const actual = actualMake('before.yml', 'after.yml');
     expect(actual).toBe(expected);
   });
+  it('INI check', () => {
+    const actual = actualMake('before.ini', 'after.ini');
+    expect(actual).toBe(expected);
+  });
 });
