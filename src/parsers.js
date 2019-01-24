@@ -1,28 +1,19 @@
-import { has, union, isEqual } from 'lodash';
+import yaml from 'js-yaml';
+import ini from 'ini';
+import fs from 'fs';
+import path from 'path';
 
-const parser = (firstAST, secondAST) => {
-  const keysOfFirst = Object.keys(firstAST);
-  const keysOfSecond = Object.keys(secondAST);
-  const keysOfBoth = union(keysOfFirst, keysOfSecond);
-  const result = keysOfBoth.reduce((acc, key) => {
-    if (isEqual(firstAST[key], secondAST[key])) {
-      return { ...acc, [key]: { keyName: key, value: firstAST[key], status: 'equal' } };
-    }
-    if (has(firstAST, key) && has(secondAST, key)) {
-      const newElement = {
-        keyName: key,
-        valueOfSecond: secondAST[key],
-        valueOfFirst: firstAST[key],
-        status: 'different',
-      };
-      return { ...acc, [key]: newElement };
-    }
-    if (has(secondAST, key)) {
-      return { ...acc, [key]: { keyName: key, value: secondAST[key], status: 'second' } };
-    }
-    return { ...acc, [key]: { keyName: key, value: firstAST[key], status: 'first' } };
-  }, {});
-  return result;
+const getParseMethod = {
+  '.json': JSON.parse,
+  '.yml': yaml.safeLoad,
+  '.ini': ini.parse,
 };
 
-export default parser;
+const parse = (filepath) => {
+  const filepathAbs = path.resolve(process.cwd(), filepath);
+  const fileExt = path.extname(filepathAbs);
+  const fileContent = fs.readFileSync(filepathAbs, 'utf-8');
+  return getParseMethod[fileExt](fileContent);
+};
+
+export default parse;
