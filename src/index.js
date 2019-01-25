@@ -11,18 +11,14 @@ const chartype = {
 
 const hasChildren = parent => parent instanceof Object;
 
-export const render = (abstract) => {
-  const result = abstract.map(({
-    key,
-    value,
-    type,
-    deepSize,
-  }) => {
-    const ident = ' '.repeat(deepSize * 4 - 2);
+export const render = ([deepSize, ...abstract]) => {
+  const preident = ' '.repeat(deepSize * 4 - 2);
+  const postident = ' '.repeat(deepSize * 4 - 4);
+  const result = abstract.map(({ key, value, type }) => {
     const currentValue = (value instanceof Array ? render(value) : value);
-    return `${ident}${chartype[type]} ${key}: ${currentValue}`;
+    return `${preident}${chartype[type]} ${key}: ${currentValue}`;
   });
-  return `{\n${result.join('\n')}\n}`;
+  return `{\n${result.join('\n')}\n${postident}}`;
 };
 
 const getContent = (filepath) => {
@@ -56,7 +52,7 @@ const genDiff = (filepath1, filepath2) => {
       }
       return [...acc, { ...preresult, value: sendValue(firstAST[key]), type: 'removed' }];
     }, []);
-    return result;
+    return [deepSize, ...result];
   };
   const firstLayDeepSize = 1;
   return render(iter(firstFileAST, secondFileAST, firstLayDeepSize));

@@ -4,3 +4,4 @@ Help demo: <a href="https://asciinema.org/a/222739" target="_blank"><img src="ht
 JSON diff demo: <a href="https://asciinema.org/a/223117" target="_blank"><img src="https://asciinema.org/a/223117.svg" /></a>
 YAML diff demo: <a href="https://asciinema.org/a/223252" target="_blank"><img src="https://asciinema.org/a/223252.svg" /></a>
 INI diff demo: <a href="https://asciinema.org/a/223270" target="_blank"><img src="https://asciinema.org/a/223270.svg" /></a>
+recursive diff demo: <a href="https://asciinema.org/a/223529" target="_blank"><img src="https://asciinema.org/a/223529.svg" /></a>
