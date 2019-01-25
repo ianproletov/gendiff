@@ -3,9 +3,9 @@ import path from 'path';
 import parse from './parsers';
 
 const chartype = {
-  equal: '',
-  second: '+',
-  first: '-',
+  saved: '',
+  added: '+',
+  removed: '-',
 };
 
 export const render = (abstract) => {
@@ -19,17 +19,17 @@ const genDiff = (filepath1, filepath2) => {
   const keys = union(Object.keys(firstAST), Object.keys(secondAST));
   const result = keys.reduce((acc, key) => {
     if (isEqual(firstAST[key], secondAST[key])) {
-      return [...acc, { key, value: firstAST[key], type: 'equal' }];
+      return [...acc, { key, value: firstAST[key], type: 'saved' }];
     }
     if (has(firstAST, key) && has(secondAST, key)) {
-      const element1 = { key, value: secondAST[key], type: 'second' };
-      const element2 = { key, value: firstAST[key], type: 'first' };
+      const element1 = { key, value: secondAST[key], type: 'added' };
+      const element2 = { key, value: firstAST[key], type: 'removed' };
       return [...acc, element1, element2];
     }
     if (has(secondAST, key)) {
-      return [...acc, { key, value: secondAST[key], type: 'second' }];
+      return [...acc, { key, value: secondAST[key], type: 'added' }];
     }
-    return [...acc, { key, value: firstAST[key], type: 'first' }];
+    return [...acc, { key, value: firstAST[key], type: 'removed' }];
   }, []);
   return render(result);
 };
