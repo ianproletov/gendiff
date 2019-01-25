@@ -1,5 +1,6 @@
 import { has, union, isEqual } from 'lodash';
 import path from 'path';
+import fs from 'fs';
 import parse from './parsers';
 
 const chartype = {
@@ -13,9 +14,14 @@ export const render = (abstract) => {
   return `{\n ${result}\n}`;
 };
 
+const getContent = (filepath) => {
+  const pathabs = path.resolve(process.cwd(), filepath);
+  return fs.readFileSync(pathabs, 'utf-8');
+};
+
 const genDiff = (filepath1, filepath2) => {
-  const firstAST = parse(path.resolve(process.cwd(), filepath1));
-  const secondAST = parse(path.resolve(process.cwd(), filepath2));
+  const firstAST = parse(getContent(filepath1), path.extname(filepath1));
+  const secondAST = parse(getContent(filepath2), path.extname(filepath2));
   const keys = union(Object.keys(firstAST), Object.keys(secondAST));
   const result = keys.reduce((acc, key) => {
     if (isEqual(firstAST[key], secondAST[key])) {

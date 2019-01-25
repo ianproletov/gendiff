@@ -1,7 +1,5 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
-import fs from 'fs';
-import path from 'path';
 
 const parseMethods = {
   '.json': JSON.parse,
@@ -9,10 +7,6 @@ const parseMethods = {
   '.ini': ini.parse,
 };
 
-const parse = (filepath) => {
-  const extension = path.extname(filepath);
-  const content = fs.readFileSync(filepath, 'utf-8');
-  return parseMethods[extension](content);
-};
+const parse = (content, extension) => parseMethods[extension](content);
 
 export default parse;
