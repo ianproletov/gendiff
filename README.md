@@ -6,3 +6,4 @@ YAML diff demo: <a href="https://asciinema.org/a/223252" target="_blank"><img sr
 INI diff demo: <a href="https://asciinema.org/a/223270" target="_blank"><img src="https://asciinema.org/a/223270.svg" /></a>
 recursive diff demo: <a href="https://asciinema.org/a/223529" target="_blank"><img src="https://asciinema.org/a/223529.svg" /></a>
 plain render demo: <a href="https://asciinema.org/a/223606" target="_blank"><img src="https://asciinema.org/a/223606.svg" /></a>
+json render demo: <a href="https://asciinema.org/a/223631" target="_blank"><img src="https://asciinema.org/a/223631.svg" /></a>
