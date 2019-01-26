@@ -7,7 +7,7 @@ import { defaultRender, plainRender } from '../renderers/rendererslist';
 const renderMethods = { plain: plainRender };
 
 program
-  .version('0.0.7', '-V, --version')
+  .version('0.0.8', '-V, --version')
   .description('Usage: gendiff [options]')
   .description('Compares two configuration files and shows a difference.')
   .option('-f, --format [type]', 'Output format')
