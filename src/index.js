@@ -12,32 +12,32 @@ const getContent = (filepath) => {
 const genDiff = (filepath1, filepath2, method = defaultRender) => {
   const extension1 = path.extname(filepath1);
   const extension2 = path.extname(filepath2);
-  const firstFileAST = parse(getContent(filepath1), extension1);
-  const secondFileAST = parse(getContent(filepath2), extension2);
-  const iter = (firstAST, secondAST) => {
-    const keys = union(Object.keys(firstAST), Object.keys(secondAST));
+  const firstFileTree = parse(getContent(filepath1), extension1);
+  const secondFileTree = parse(getContent(filepath2), extension2);
+  const iter = (firstTree, secondTree) => {
+    const keys = union(Object.keys(firstTree), Object.keys(secondTree));
     return keys.reduce((acc, key) => {
-      if (has(firstAST, key) && has(secondAST, key)) {
-        if (firstAST[key] === secondAST[key]) {
-          return [...acc, { key, value: firstAST[key], type: 'same' }];
+      if (has(firstTree, key) && has(secondTree, key)) {
+        if (firstTree[key] === secondTree[key]) {
+          return [...acc, { key, value: firstTree[key], type: 'same' }];
         }
-        if ((isObject(firstAST[key]) && isObject(secondAST[key]))) {
-          return [...acc, { key, children: iter(firstAST[key], secondAST[key]), type: 'samedeep' }];
+        if ((isObject(firstTree[key]) && isObject(secondTree[key]))) {
+          return [...acc, { key, children: iter(firstTree[key], secondTree[key]), type: 'samedeep' }];
         }
         return [...acc, {
           key,
-          prevValue: firstAST[key],
-          nextValue: secondAST[key],
+          prevValue: firstTree[key],
+          nextValue: secondTree[key],
           type: 'updated',
         }];
       }
-      if (has(secondAST, key)) {
-        return [...acc, { key, value: secondAST[key], type: 'added' }];
+      if (has(secondTree, key)) {
+        return [...acc, { key, value: secondTree[key], type: 'added' }];
       }
-      return [...acc, { key, value: firstAST[key], type: 'removed' }];
+      return [...acc, { key, value: firstTree[key], type: 'removed' }];
     }, []);
   };
-  return method(iter(firstFileAST, secondFileAST));
+  return method(iter(firstFileTree, secondFileTree));
 };
 
 export default genDiff;
