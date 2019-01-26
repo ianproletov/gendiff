@@ -28,7 +28,6 @@ const render = (abstract, deepSize = 0) => {
       case 'same':
         return `${preident}  ${key}: ${stringify(value, deepSize + 1)}`;
       default:
-        break;
     }
     return null;
   });

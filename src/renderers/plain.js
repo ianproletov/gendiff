@@ -5,19 +5,20 @@ const stringify = value => (value instanceof Object ? 'complex value' : value);
 const plainRender = (abstract) => {
   const result = abstract.map((element) => {
     const { key, value, type } = element;
-    if (type === 'samedeep') {
-      return plainRender(giveNames(key, element.children));
+    switch (type) {
+      case 'samedeep':
+        return plainRender(giveNames(key, element.children));
+      case 'same':
+        return null;
+      case 'added':
+        return `Property ${key} was added with value: ${stringify(value)}`;
+      case 'removed':
+        return `Property ${key} was removed`;
+      case 'updated':
+        return `Property ${key} was updated. From ${stringify(element.prevValue)} to ${stringify(element.nextValue)}`;
+      default:
     }
-    if (type === 'same') {
-      return null;
-    }
-    if (type === 'added') {
-      return `Property ${key} was added with value: ${stringify(value)}`;
-    }
-    if (type === 'removed') {
-      return `Property ${key} was removed`;
-    }
-    return `Property ${key} was updated. From ${stringify(element.prevValue)} to ${stringify(element.nextValue)}`;
+    return null;
   });
   return result.filter(n => n).join('\n');
 };
