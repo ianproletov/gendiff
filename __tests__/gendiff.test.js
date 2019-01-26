@@ -1,17 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import genDiff from '../src';
-import { plainRender, defaultRender } from '../src/renderers';
+import { plainRender, defaultRender, jsonRender } from '../src/renderers';
 
 describe.each(['simple', 'complex'])(
   'genDiff %p', (fixturesPath) => {
     describe.each(['.json', '.yml', '.ini'])(
       '%p difference test', (extension) => {
-        it.each(['default', 'plain'])(
+        it.each(['default', 'plain', 'json'])(
           '%p renderer', (rendertype) => {
             const renderers = {
               default: defaultRender,
               plain: plainRender,
+              json: jsonRender,
             };
             const currentFixturesPath = path.join('__tests__/__fixtures__', fixturesPath);
             const beforePath = path.join(currentFixturesPath, `before${extension}`);
