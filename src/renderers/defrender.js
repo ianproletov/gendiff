@@ -1,10 +1,3 @@
-const chartype = {
-  same: ' ',
-  samedeep: ' ',
-  added: '+',
-  removed: '-',
-};
-
 const stringify = (content, deepSize) => {
   if (content instanceof Object) {
     const preident = ' '.repeat(deepSize * 4 + 2);
@@ -20,15 +13,24 @@ const render = (abstract, deepSize = 0) => {
   const postident = ' '.repeat(deepSize * 4);
   const result = abstract.map((element) => {
     const { key, value, type } = element;
-    if (type === 'samedeep') {
-      return `${preident}${chartype[type]} ${key}: ${render(element.children, deepSize + 1)}`;
+    switch (type) {
+      case 'samedeep':
+        return (`${preident}  ${key}: ${render(element.children, deepSize + 1)}`);
+      case 'updated':
+        return [
+          `${preident}+ ${key}: ${stringify(element.nextValue, deepSize + 1)}`,
+          `${preident}- ${key}: ${stringify(element.prevValue, deepSize + 1)}`,
+        ].join('\n');
+      case 'added':
+        return `${preident}+ ${key}: ${stringify(value, deepSize + 1)}`;
+      case 'removed':
+        return `${preident}- ${key}: ${stringify(value, deepSize + 1)}`;
+      case 'same':
+        return `${preident}  ${key}: ${stringify(value, deepSize + 1)}`;
+      default:
+        break;
     }
-    if (type === 'updated') {
-      const added = `${preident}${chartype.added} ${key}: ${stringify(element.nextValue, deepSize + 1)}`;
-      const removed = `${preident}${chartype.removed} ${key}: ${stringify(element.prevValue, deepSize + 1)}`;
-      return [added, removed].join('\n');
-    }
-    return `${preident}${chartype[type]} ${key}: ${stringify(value, deepSize + 1)}`;
+    return null;
   });
   return `{\n${result.join('\n')}\n${postident}}`;
 };

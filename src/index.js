@@ -9,7 +9,7 @@ const getContent = (filepath) => {
   return fs.readFileSync(pathabs, 'utf-8');
 };
 
-const genDiff = (filepath1, filepath2, method = defaultRender) => {
+const genDiff = (filepath1, filepath2, renderMethod = defaultRender) => {
   const extension1 = path.extname(filepath1);
   const extension2 = path.extname(filepath2);
   const firstFileTree = parse(getContent(filepath1), extension1);
@@ -37,7 +37,7 @@ const genDiff = (filepath1, filepath2, method = defaultRender) => {
       return [...acc, { key, value: firstTree[key], type: 'removed' }];
     }, []);
   };
-  return method(iter(firstFileTree, secondFileTree));
+  return renderMethod(iter(firstFileTree, secondFileTree));
 };
 
 export default genDiff;
