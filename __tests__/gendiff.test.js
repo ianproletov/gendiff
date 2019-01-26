@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import genDiff from '../src';
-import { plainRender, defaultRender } from '../src/renderers/rendererslist';
+import { plainRender, defaultRender } from '../src/renderers';
 
 describe.each(['simple', 'complex'])(
   'genDiff %p', (fixturesPath) => {

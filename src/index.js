@@ -2,14 +2,14 @@ import { has, union, isObject } from 'lodash';
 import path from 'path';
 import fs from 'fs';
 import parse from './parsers';
-import render from './renderers/defrender';
+import defaultRender from './renderers';
 
 const getContent = (filepath) => {
   const pathabs = path.resolve(process.cwd(), filepath);
   return fs.readFileSync(pathabs, 'utf-8');
 };
 
-const genDiff = (filepath1, filepath2, method = render) => {
+const genDiff = (filepath1, filepath2, method = defaultRender) => {
   const extension1 = path.extname(filepath1);
   const extension2 = path.extname(filepath2);
   const firstFileAST = parse(getContent(filepath1), extension1);

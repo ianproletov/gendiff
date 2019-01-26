@@ -2,7 +2,7 @@
 
 import genDiff from '..';
 import program from 'commander';
-import { defaultRender, plainRender } from '../renderers/rendererslist';
+import { defaultRender, plainRender } from '../renderers';
 
 const renderMethods = { plain: plainRender };
 
