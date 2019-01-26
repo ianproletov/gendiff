@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 
 import genDiff from '..';
-import commander from 'commander';
+import program from 'commander';
+import { defaultRender, plainRender } from '../renderers/rendererslist';
 
-commander
-  .version('0.0.1', '-V, --version')
-  .option('-f, --format [type]', 'Output format')
+const renderMethods = { plain: plainRender };
+
+program
+  .version('0.0.7', '-V, --version')
   .description('Usage: gendiff [options]')
   .description('Compares two configuration files and shows a difference.')
+  .option('-f, --format [type]', 'Output format')
   .arguments('<firstConfig> <secondConfig>')
-  .action((firstConfig, secondConfig) => {
-    const result = genDiff(firstConfig, secondConfig);
+  .action((firstConfig, secondConfig, options) => {
+    const method = (options.format ? renderMethods[options.format] : defaultRender);
+    const result = genDiff(firstConfig, secondConfig, method);
     console.log(result);
   });
-commander.parse(process.argv);
+program.parse(process.argv);
