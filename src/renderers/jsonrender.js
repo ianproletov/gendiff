@@ -15,9 +15,7 @@ const jsonRender = (abstract) => {
       case 'updated':
         return `"${key}":{"newValue":${stringify(element.nextValue)},"oldvalue":${stringify(element.prevValue)},"type":"${type}"}`;
       case 'added':
-        return `"${key}":{"value":${stringify(value)},"type":"${type}"}`;
       case 'removed':
-        return `"${key}":{"value":${stringify(value)},"type":"${type}"}`;
       case 'same':
         return `"${key}":{"value":${stringify(value)},"type":"${type}"}`;
       default:
