@@ -1,6 +1,6 @@
 {
   "name": "gendiff-ianproletov",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "my second hexlet project",
   "main": "dist/index.js",
   "bin": {

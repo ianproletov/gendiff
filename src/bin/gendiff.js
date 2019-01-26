@@ -2,9 +2,9 @@
 
 import genDiff from '..';
 import program from 'commander';
-import { defaultRender, plainRender } from '../renderers';
+import { defaultRender, plainRender, jsonRender } from '../renderers';
 
-const renderMethods = { plain: plainRender };
+const renderMethods = { plain: plainRender, json: jsonRender };
 
 program
   .version('0.0.8', '-V, --version')
