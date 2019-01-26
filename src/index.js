@@ -9,13 +9,26 @@ const chartype = {
   removed: '-',
 };
 
-const hasChildren = parent => parent instanceof Object;
+const isComplex = parent => parent instanceof Object;
 
-export const render = ([deepSize, ...abstract]) => {
+const hasChildren = element => element.children !== undefined;
+
+const stringify = (content, deepSize) => {
   const preident = ' '.repeat(deepSize * 4 - 2);
   const postident = ' '.repeat(deepSize * 4 - 4);
-  const result = abstract.map(({ key, value, type }) => {
-    const currentValue = (value instanceof Array ? render(value) : value);
+  const result = Object.keys(content).map(key => (`${preident}  ${key}: ${content[key]}`));
+  return `{\n${result.join('\n')}\n${postident}}`;
+};
+
+const render = ([deepSize, ...abstract]) => {
+  const preident = ' '.repeat(deepSize * 4 - 2);
+  const postident = ' '.repeat(deepSize * 4 - 4);
+  const result = abstract.map((element) => {
+    const { key, value, type } = element;
+    if (hasChildren(element)) {
+      return `${preident}${chartype[type]} ${key}: ${render(element.children)}`;
+    }
+    const currentValue = (isComplex(value) ? stringify(value, deepSize + 1) : value);
     return `${preident}${chartype[type]} ${key}: ${currentValue}`;
   });
   return `{\n${result.join('\n')}\n${postident}}`;
@@ -32,7 +45,6 @@ const genDiff = (filepath1, filepath2) => {
   const firstFileAST = parse(getContent(filepath1), extension1);
   const secondFileAST = parse(getContent(filepath2), extension2);
   const iter = (firstAST, secondAST, deepSize) => {
-    const sendValue = cont => (hasChildren(cont) ? iter(cont, cont, deepSize + 1) : cont);
     const keys = union(Object.keys(firstAST), Object.keys(secondAST));
     const result = keys.reduce((acc, key) => {
       const preresult = { key, deepSize };
@@ -40,17 +52,17 @@ const genDiff = (filepath1, filepath2) => {
         if (firstAST[key] === secondAST[key]) {
           return [...acc, { ...preresult, value: firstAST[key], type: 'same' }];
         }
-        if ((hasChildren(firstAST[key]) && hasChildren(secondAST[key]))) {
-          return [...acc, { ...preresult, value: iter(firstAST[key], secondAST[key], deepSize + 1), type: 'same' }];
+        if ((isComplex(firstAST[key]) && isComplex(secondAST[key]))) {
+          return [...acc, { ...preresult, children: iter(firstAST[key], secondAST[key], deepSize + 1), type: 'same' }];
         }
-        const element1 = { ...preresult, value: sendValue(secondAST[key]), type: 'added' };
-        const element2 = { ...preresult, value: sendValue(firstAST[key]), type: 'removed' };
+        const element1 = { ...preresult, value: secondAST[key], type: 'added' };
+        const element2 = { ...preresult, value: firstAST[key], type: 'removed' };
         return [...acc, element1, element2];
       }
       if (has(secondAST, key)) {
-        return [...acc, { ...preresult, value: sendValue(secondAST[key]), type: 'added' }];
+        return [...acc, { ...preresult, value: secondAST[key], type: 'added' }];
       }
-      return [...acc, { ...preresult, value: sendValue(firstAST[key]), type: 'removed' }];
+      return [...acc, { ...preresult, value: firstAST[key], type: 'removed' }];
     }, []);
     return [deepSize, ...result];
   };
