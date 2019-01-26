@@ -24,9 +24,12 @@ const genDiff = (filepath1, filepath2, method = render) => {
         if ((isObject(firstAST[key]) && isObject(secondAST[key]))) {
           return [...acc, { key, children: iter(firstAST[key], secondAST[key]), type: 'samedeep' }];
         }
-        const element1 = { key, value: secondAST[key], type: 'added' };
-        const element2 = { key, value: firstAST[key], type: 'removed' };
-        return [...acc, element1, element2];
+        return [...acc, {
+          key,
+          prevValue: firstAST[key],
+          nextValue: secondAST[key],
+          type: 'updated',
+        }];
       }
       if (has(secondAST, key)) {
         return [...acc, { key, value: secondAST[key], type: 'added' }];

@@ -13,19 +13,20 @@ const stringify = (content, deepSize) => {
 };
 
 const render = (abstract, deepSize = 0) => {
+  const currentValue = value => (value instanceof Object ? stringify(value, deepSize + 1) : value);
   const preident = ' '.repeat(deepSize * 4 + 2);
   const postident = ' '.repeat(deepSize * 4);
-  const result = abstract.map(({
-    key,
-    value,
-    type,
-    children,
-  }) => {
+  const result = abstract.map((element) => {
+    const { key, value, type } = element;
     if (type === 'samedeep') {
-      return `${preident}${chartype[type]} ${key}: ${render(children, deepSize + 1)}`;
+      return `${preident}${chartype[type]} ${key}: ${render(element.children, deepSize + 1)}`;
     }
-    const currentValue = (value instanceof Object ? stringify(value, deepSize + 1) : value);
-    return `${preident}${chartype[type]} ${key}: ${currentValue}`;
+    if (type === 'updated') {
+      const added = `${preident}${chartype.added} ${key}: ${currentValue(element.nextValue)}`;
+      const removed = `${preident}${chartype.removed} ${key}: ${currentValue(element.prevValue)}`;
+      return [added, removed].join('\n');
+    }
+    return `${preident}${chartype[type]} ${key}: ${currentValue(value)}`;
   });
   return `{\n${result.join('\n')}\n${postident}}`;
 };
