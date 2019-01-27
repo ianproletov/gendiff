@@ -1,10 +1,6 @@
 #!/usr/bin/env node
-
 import genDiff from '..';
 import program from 'commander';
-import { defaultRender, plainRender, jsonRender } from '../renderers';
-
-const renderMethods = { plain: plainRender, json: jsonRender };
 
 program
   .version('0.0.8', '-V, --version')
@@ -13,8 +9,7 @@ program
   .option('-f, --format [type]', 'Output format')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig, options) => {
-    const method = (options.format ? renderMethods[options.format] : defaultRender);
-    const result = genDiff(firstConfig, secondConfig, method);
+    const result = genDiff(firstConfig, secondConfig, options.type);
     console.log(result);
   });
 program.parse(process.argv);

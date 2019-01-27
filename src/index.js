@@ -2,14 +2,14 @@ import { has, union, isObject } from 'lodash';
 import path from 'path';
 import fs from 'fs';
 import parse from './parsers';
-import defaultRender from './renderers';
+import render from './renderers';
 
 const getContent = (filepath) => {
   const pathabs = path.resolve(process.cwd(), filepath);
   return fs.readFileSync(pathabs, 'utf-8');
 };
 
-const genDiff = (filepath1, filepath2, renderMethod = defaultRender) => {
+const genDiff = (filepath1, filepath2, rendertype) => {
   const extension1 = path.extname(filepath1);
   const extension2 = path.extname(filepath2);
   const firstFileTree = parse(getContent(filepath1), extension1);
@@ -37,7 +37,7 @@ const genDiff = (filepath1, filepath2, renderMethod = defaultRender) => {
       return [...acc, { key, value: firstTree[key], type: 'removed' }];
     }, []);
   };
-  return renderMethod(iter(firstFileTree, secondFileTree));
+  return render(rendertype)(iter(firstFileTree, secondFileTree));
 };
 
 export default genDiff;
