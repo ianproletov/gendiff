@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import { isObject, flatten } from 'lodash';
 
 const stringify = (content, depth) => {
   if (!isObject(content)) {
@@ -22,7 +22,7 @@ const render = (abstract, depth = 0) => {
         return [
           `${preident}+ ${key}: ${stringify(element.nextValue, depth + 1)}`,
           `${preident}- ${key}: ${stringify(element.prevValue, depth + 1)}`,
-        ].join('\n');
+        ];
       case 'added':
         return `${preident}+ ${key}: ${stringify(value, depth + 1)}`;
       case 'removed':
@@ -33,7 +33,7 @@ const render = (abstract, depth = 0) => {
     }
     return null;
   });
-  return `{\n${result.join('\n')}\n${postident}}`;
+  return `{\n${flatten(result).join('\n')}\n${postident}}`;
 };
 
 export default render;
