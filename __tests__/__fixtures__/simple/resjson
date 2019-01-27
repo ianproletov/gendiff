@@ -1,1 +1,1 @@
-{"host":{"value":"hexlet.io","type":"same"},"timeout":{"newValue":"20","oldvalue":"50","type":"updated"},"proxy":{"value":"123.234.53.22","type":"removed"},"follow":{"value":"false","type":"removed"},"verbose":{"value":"true","type":"added"}}
+[{"key":"host","value":"hexlet.io","type":"same"},{"key":"timeout","prevValue":"50","nextValue":"20","type":"updated"},{"key":"proxy","value":"123.234.53.22","type":"removed"},{"key":"follow","value":false,"type":"removed"},{"key":"verbose","value":true,"type":"added"}]
