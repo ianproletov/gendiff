@@ -1,11 +1,13 @@
+import { isObject } from 'lodash';
+
 const stringify = (content, depth) => {
-  if (content instanceof Object) {
-    const preident = ' '.repeat(depth * 4 + 2);
-    const postident = ' '.repeat(depth * 4);
-    const result = Object.keys(content).map(key => (`${preident}  ${key}: ${content[key]}`));
-    return `{\n${result.join('\n')}\n${postident}}`;
+  if (!isObject(content)) {
+    return content;
   }
-  return content;
+  const preident = ' '.repeat(depth * 4 + 2);
+  const postident = ' '.repeat(depth * 4);
+  const result = Object.keys(content).map(key => (`${preident}  ${key}: ${content[key]}`));
+  return `{\n${result.join('\n')}\n${postident}}`;
 };
 
 const render = (abstract, depth = 0) => {
