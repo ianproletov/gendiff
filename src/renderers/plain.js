@@ -2,8 +2,8 @@ const giveNames = (parentKey, children) => children.map(element => ({ ...element
 
 const stringify = value => (value instanceof Object ? 'complex value' : value);
 
-const plainRender = (abstract) => {
-  const result = abstract.map((element) => {
+const plainRender = (content) => {
+  const result = content.map((element) => {
     const { key, value, type } = element;
     switch (type) {
       case 'samedeep':
@@ -17,8 +17,8 @@ const plainRender = (abstract) => {
       case 'updated':
         return `Property ${key} was updated. From ${stringify(element.prevValue)} to ${stringify(element.nextValue)}`;
       default:
+        throw new Error(`Unknown type ${type}`);
     }
-    return null;
   });
   return result.filter(n => n).join('\n');
 };
